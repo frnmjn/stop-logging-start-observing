@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: smtp4dev
+  name: smtp4dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smtp4dev
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: smtp4dev
+    spec:
+      containers:
+        - image: rnwood/smtp4dev:v3
+          name: smtp4dev
+          ports:
+            - containerPort: 80
+            - containerPort: 25
+          resources: {}
+status: {}

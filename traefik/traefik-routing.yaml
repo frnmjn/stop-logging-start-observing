@@ -1,0 +1,53 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: routing
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`order.localhost`) && PathPrefix(`/api/orders`)
+      kind: Rule
+      services:
+        - name: pizzify-order
+          port: 80
+    - match: Host(`grafana.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: grafana
+          port: 80
+    - match: Host(`prometheus.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: prometheus-stack-kube-prom-prometheus
+          port: 9090
+    - match: Host(`jaeger.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: jaeger-jaeger-operator-jaeger-query
+          port: 16686
+    - match: Host(`otel.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: otel-collector-daemonset-collector
+          port: 4318
+    - match: Host(`app.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: pizzify-ui
+          port: 80
+    - match: Host(`smtp.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: smtp4dev
+          port: 80
+    - match: Host(`rabbitmq.localhost`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: rabbitmq
+          port: 15672
+    - match: Host(`rabbitmq.localhost`) && PathPrefix(`/metrics`)
+      kind: Rule
+      services:
+        - name: rabbitmq
+          port: 15692
